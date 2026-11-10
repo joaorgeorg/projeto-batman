@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THE BATMAN | O Cavaleiro das Trevas de Gotham</title>
+  <meta name="description"
+    content="Explore o universo do Batman: história oficial, aliados da Bat-Família, a galeria de vilões de Gotham e trailers lendários do cinema.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Montserrat:wght@300;400;600;800&family=Orbitron:wght@500;700;900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="batman-theme">
+  <!-- Bat-Sinal Interativo & Sombras de Fundo -->
+  <div id="bat-cursor" class="bat-cursor" aria-hidden="true"></div>
+  <div class="fog-overlay"></div>
+  <canvas id="ambient-canvas"></canvas>
+
+  <!-- Audio bat-computer effects (Web Audio API synthetized) -->
+  <div class="audio-control-bar">
+    <button id="bat-audio-toggle" class="audio-btn" title="Efeitos Sonoros do Batcomputador">
+      <i class="fa-solid fa-volume-high"></i>
+      <span>ÁUDIO SFX: ATIVO</span>
+    </button>
+    <button id="bat-signal-trigger" class="signal-trigger-btn" title="Acionar Bat-Sinal no Céu de Gotham">
+      <i class="fa-solid fa-lightbulb"></i>
+      <span>ACIONAR BAT-SINAL</span>
+    </button>
+  </div>
+
+  <!-- Bat-Signal Sky Light Projection com o Símbolo Autêntico do Batman -->
+  <div id="sky-batsignal" class="sky-batsignal">
+    <div class="signal-beam">
+      <div class="signal-crest">
+        <svg viewBox="0 0 1000 480" class="bat-svg-emblem">
+          <path
+            d="M500,470 C470,390 410,330 330,310 C350,260 310,210 240,210 C160,210 90,270 30,360 C10,260 40,160 130,90 C220,130 310,130 380,80 C410,140 450,180 470,180 L470,70 L488,40 L496,100 L504,100 L512,40 L530,70 L530,180 C550,180 590,140 620,80 C690,130 780,130 870,90 C960,160 990,260 970,360 C910,270 840,210 760,210 C690,210 650,260 670,310 C590,330 530,390 500,470 Z" />
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navegação Gotham Tech -->
+  <header class="bat-navbar">
+    <div class="nav-container">
+      <a href="#hero" class="brand-logo">
+        <svg class="nav-bat-logo" viewBox="0 0 1000 480">
+          <path
+            d="M500,470 C470,390 410,330 330,310 C350,260 310,210 240,210 C160,210 90,270 30,360 C10,260 40,160 130,90 C220,130 310,130 380,80 C410,140 450,180 470,180 L470,70 L488,40 L496,100 L504,100 L512,40 L530,70 L530,180 C550,180 590,140 620,80 C690,130 780,130 870,90 C960,160 990,260 970,360 C910,270 840,210 760,210 C690,210 650,260 670,310 C590,330 530,390 500,470 Z" />
+        </svg>
+        <div class="logo-text">
+          <span class="gotham-title">GOTHAM ARCHIVES</span>
+          <span class="classified-tag">NÍVEL 5 // BATCOMPUTER</span>
+        </div>
+      </a>
+
+      <nav class="nav-links">
+        <a href="#hero" class="nav-link active"><i class="fa-solid fa-mask"></i> Início</a>
+        <a href="#origem" class="nav-link"><i class="fa-solid fa-book-skull"></i> História</a>
+        <a href="#aliados" class="nav-link"><i class="fa-solid fa-shield-halved"></i> Aliados</a>
+        <a href="#viloes" class="nav-link"><i class="fa-solid fa-biohazard"></i> Vilões</a>
+        <a href="#trailers" class="nav-link"><i class="fa-solid fa-film"></i> Cinema & Trailers</a>
+        <a href="#arsenal" class="nav-link"><i class="fa-solid fa-wrench"></i> Bat-Equipamentos</a>
+      </nav>
+
+      <button id="mobile-menu-btn" class="mobile-toggle" aria-label="Abrir Menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- HERO SECTION INTERATIVA -->
+  <section id="hero" class="hero-section">
+    <div class="hero-bg-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="pulsing-dot"></span>
+        SISTEMA DE VIGILÂNCIA DE GOTHAM ONLINE
+      </div>
+      <h1 class="hero-glitch" data-text="EU SOU A VINGANÇA. EU SOU A NOITE.">EU SOU A VINGANÇA.<br><span
+          class="highlight-gold">EU SOU O BATMAN.</span></h1>
+      <p class="hero-description">
+        Nas sombras de uma metrópole corrompida pelo crime, o bilionário Bruce Wayne jurou proteger os inocentes.
+        Entre em seus arquivos secretos, descubra sua saga, conheça os maiores aliados com suas fotos autênticas, encare
+        a galeria de vilões do Asilo Arkham e reviva as lendas cinematográficas.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#origem" class="bat-btn bat-btn-primary">
+          <i class="fa-solid fa-skull"></i> EXPLORAR A HISTÓRIA
+        </a>
+        <a href="#trailers" class="bat-btn bat-btn-outline">
+          <i class="fa-solid fa-play"></i> VER OS TRAILERS
+        </a>
+        <button id="detective-mode-btn" class="bat-btn bat-btn-detective">
+          <i class="fa-solid fa-eye"></i> MODO DETETIVE
+        </button>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat-card">
+          <span class="stat-num" data-val="1939">1939</span>
+          <span class="stat-lbl">Ano de Surgimento (Detective Comics #27)</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-card">
+          <span class="stat-num" data-val="192">192</span>
+          <span class="stat-lbl">Q.I. Estimado de Bruce Wayne</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-card">
+          <span class="stat-num" data-val="127">127</span>
+          <span class="stat-lbl">Estilos de Artes Marciais Dominadas</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-card">
+          <span class="stat-num" data-val="0">0</span>
+          <span class="stat-lbl">Poderes Sobre-humanos (Apenas Preparo)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-art-container">
+      <div class="batman-silhouette-card" id="tilt-card">
+        <div class="card-glow"></div>
+        <div class="batman-emblem-3d">
+          <svg viewBox="0 0 1000 480">
+            <path
+              d="M500,470 C470,390 410,330 330,310 C350,260 310,210 240,210 C160,210 90,270 30,360 C10,260 40,160 130,90 C220,130 310,130 380,80 C410,140 450,180 470,180 L470,70 L488,40 L496,100 L504,100 L512,40 L530,70 L530,180 C550,180 590,140 620,80 C690,130 780,130 870,90 C960,160 990,260 970,360 C910,270 840,210 760,210 C690,210 650,260 670,310 C590,330 530,390 500,470 Z" />
+          </svg>
+        </div>
+        <div class="card-caption">
+          <h3>BRUCE WAYNE</h3>
+          <p>O Cavaleiro das Trevas // O Maior Detetive do Mundo</p>
+        </div>
+        <div class="card-scanlines"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 1: A HISTÓRIA & LINHA DO TEMPO -->
+  <section id="origem" class="content-section">
+    <div class="section-header">
+      <span class="sub-title"><i class="fa-solid fa-folder-open"></i> DOSSIÊ BIOGRÁFICO</span>
+      <h2>A ORIGEM DO MORCEGO</h2>
+      <div class="bat-divider"><span>🦇</span></div>
+      <p class="section-intro">De uma tragédia no Beco do Crime até o símbolo definitivo da justiça implacável.</p>
+    </div>
+
+    <div class="origin-grid">
+      <div class="origin-story-block">
+        <div class="origin-card active-origin" data-target="crime-alley">
+          <div class="origin-icon"><i class="fa-solid fa-gun"></i></div>
+          <div class="origin-info">
+            <h4>O Beco do Crime (A Queda)</h4>
+            <p>Após saírem do cinema, Thomas e Martha Wayne são brutalmente assassinados diante de Bruce por Joe Chill.
+              Ali morria uma criança e nascia um juramento eterno de livrar o mundo do mal.</p>
+          </div>
+        </div>
+
+        <div class="origin-card" data-target="training">
+          <div class="origin-icon"><i class="fa-solid fa-mountain"></i></div>
+          <div class="origin-info">
+            <h4>A Jornada do Conhecimento</h4>
+            <p>Bruce deixa Gotham e viaja pelo mundo durante anos. Treina artes marciais no Oriente, estuda
+              criminologia, química, psicologia do medo e domina a ciência do escapismo.</p>
+          </div>
+        </div>
+
+        <div class="origin-card" data-target="bat-omen">
+          <div class="origin-icon"><i class="fa-solid fa-moon"></i></div>
+          <div class="origin-info">
+            <h4>O Sinal & O Medo</h4>
+            <p>"Criminosos são covardes e supersticiosos". Ao ver um morcego atravessar a janela da Mansão Wayne em um
+              momento de desespero, Bruce encontra sua identidade: tornar-se a própria criatura da noite.</p>
+          </div>
+        </div>
+
+        <div class="origin-card" data-target="code">
+          <div class="origin-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+          <div class="origin-info">
+            <h4>A Regra de Ouro</h4>
+            <p>Batman recusa-se a cruzar a linha de matar seus inimigos. Para ele, se assassinar um criminoso, não será
+              diferente dos monstros que jurou combater.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="origin-display-terminal">
+        <div class="terminal-header">
+          <span class="terminal-dot red"></span>
+          <span class="terminal-dot yellow"></span>
+          <span class="terminal-dot green"></span>
+          <span class="terminal-title">BATCOMPUTER_ARCHIVE // RELATÓRIO CONFIDENCIAL</span>
+        </div>
+        <div class="terminal-body" id="origin-terminal-text">
+          <div class="terminal-timestamp">[SISTEMA WAYNETECH V9.4] - ACESSO AUTORIZADO</div>
+          <h3 id="term-title">A NOITE FATÍDICA EM PARK ROW</h3>
+          <p id="term-desc">A noite chuvosa em Gotham que redefiniu o destino de Bruce Wayne. A pérola partida no
+            asfalto molhado permanece como o lembrete diário de que Gotham não pode gerar novos órfãos da violência
+            urbana.</p>
+
+          <div class="terminal-quote">
+            <blockquote>"Pai, eu falhei... Não, espere. Há algo lá fora... Uma criatura da noite. Negra, terrível...
+              Sim, pai. Eu me tornarei um morcego."</blockquote>
+            <cite>— Batman: Ano Um (Frank Miller & David Mazzucchelli)</cite>
+          </div>
+
+          <div class="terminal-specs">
+            <div><strong>CIDADE:</strong> Gotham City</div>
+            <div><strong>BASE:</strong> Batcaverna (Abaixo da Mansão Wayne)</div>
+            <div><strong>STATUS:</strong> Ativo / Guardião Protetor</div>
+            <div><strong>FILIAÇÃO:</strong> Liga da Justiça / Família Batman</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 2: ALIADOS E A BAT-FAMÍLIA COM FOTOS REAIS -->
+  <section id="aliados" class="content-section bg-darker">
+    <div class="section-header">
+      <span class="sub-title"><i class="fa-solid fa-user-shield"></i> A BAT-FAMÍLIA</span>
+      <h2>ALIADOS DO CAVALEIRO</h2>
+      <div class="bat-divider"><span>🦇</span></div>
+      <p class="section-intro">Mesmo agindo nas sombras solitárias, o Morcego conta com leais defensores da justiça.</p>
+    </div>
+
+    <!-- Filtros de Aliados -->
+    <div class="filter-controls">
+      <button class="filter-btn active" data-filter="all">Todos</button>
+      <button class="filter-btn" data-filter="robins">Robins & Sucessores</button>
+      <button class="filter-btn" data-filter="mentor">Mentores & Suporte</button>
+      <button class="filter-btn" data-filter="gcpd">GCPD & Justiça</button>
+    </div>
+
+    <div class="character-grid" id="allies-grid">
+      <!-- Alfred Pennyworth -->
+      <div class="char-card" data-category="mentor" data-char="alfred">
+        <div class="char-card-inner">
+          <div class="char-photo-wrapper">
+            <img src="assets/images/alfred.jpg" alt="Alfred Pennyworth" class="char-real-photo" loading="lazy">
+            <div class="char-photo-overlay"></div>
+            <div class="char-badge mentor-badge">MENTOR / CIRURGIÃO</div>
+          </div>
+          <div class="char-content-wrap">
+            <h3>Alfred Pennyworth</h3>
+            <p class="char-subtitle">Mordomo, Guardião & Coração de Gotham</p>
+            <p class="char-desc">Ex-agente do serviço secreto britânico e cirurgião militar. Alfred é o pai adotivo, a
+              bússola moral e a mente que mantém Bruce vivo após cada patrulha mortal.</p>
+            <div class="char-tags">
+              <span>Lealdade Máxima</span>
+              <span>Cirurgia Médica</span>
+              <span>Comunicação</span>
+            </div>
+            <button class="dossier-expand-btn" data-target="modal-alfred">VER DOSSIÊ COMPLETO</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- James Gordon -->
+      <div class="char-card" data-category="gcpd" data-char="gordon">
+        <div class="char-card-inner">
+          <div class="char-photo-wrapper">
+            <img src="assets/images/gordon.jpg" alt="Comissário Jim Gordon" class="char-real-photo" loading="lazy">
+            <div class="char-photo-overlay"></div>
+            <div class="char-badge gcpd-badge">COMISSÁRIO DE POLÍCIA</div>
+          </div>
+          <div class="char-content-wrap">
+            <h3>Jim Gordon</h3>
+            <p class="char-subtitle">Comissário do Dpto. de Polícia de Gotham</p>
+            <p class="char-desc">O policial mais honesto de uma corporação corrupta. Gordon opera o Bat-Sinal no telhado
+              do DPGC e representa a aliança legítima entre a lei e o vigilante mascarado.</p>
+            <div class="char-tags">
+              <span>Operador Bat-Sinal</span>
+              <span>Investigação</span>
+              <span>GCPD</span>
+            </div>
+            <button class="dossier-expand-btn" data-target="modal-gordon">VER DOSSIÊ COMPLETO</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dick Grayson / Asa Noturna -->
+      <div class="char-card" data-category="robins" data-char="nightwing">
+        <div class="char-card-inner">
+          <div class="char-photo-wrapper">
+            <img src="assets/images/nightwing.jpg" alt="Dick Grayson Asa Noturna" class="char-real-photo"
+              loading="lazy">
+            <div class="char-photo-overlay"></div>
+            <div class="char-badge robin-badge">PRIMEIRO ROBIN / ASA NOTURNA</div>
+          </div>
+          <div class="char-content-wrap">
+            <h3>Dick Grayson</h3>
+            <p class="char-subtitle">O Menino Prodígio Original & Asa Noturna</p>
+            <p class="char-desc">Acrobata dos 'Graysons Voadores'. Tornou-se o primeiro Robin e mais tarde o protetor
+              independente de Blüdhaven como Asa Noturna. Representa a esperança que Bruce nunca perdeu.</p>
+            <div class="char-tags">
+              <span>Acrobacia Suprema</span>
+              <span>Bastões de Escrima</span>
+              <span>Líder Nato</span>
+            </div>
+            <button class="dossier-expand-btn" data-target="modal-dick">VER DOSSIÊ COMPLETO</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barbara Gordon / Batgirl -->
+      <div class="char-card" data-category="robins" data-char="batgirl">
+        <div class="char-card-inner">
+          <div class="char-photo-wrapper">
+            <img src="assets/images/batgirl.jpg" alt="Barbara Gordon Batgirl" class="char-real-photo" loading="lazy">
+            <div class="char-photo-overlay"></div>
+            <div class="char-badge hacker-badge">BATGIRL / ORÁCULO</div>
+          </div>
+          <div class="char-content-wrap">
+            <h3>Barbara Gordon</h3>
+            <p class="char-subtitle">Genialidade Cibernética & Combatente</p>
+            <p class="char-desc">Filha do Comissário Gordon, mestre em artes marciais e gênia da tecnologia da
+              informação. Como Oráculo, coordena a rede de inteligência global dos heróis.</p>
+            <div class="char-tags">
+              <span>Supercomputação</span>
+              <span>Hacker de Elite</span>
+              <span>Artes Marciais</span>
+            </div>
+            <button class="dossier-expand-btn" data-target="modal-barbara">VER DOSSIÊ COMPLETO</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lucius Fox -->
+      <div class="char-card" data-category="mentor" data-char="lucius">
+        <div class="char-card-inner">
+          <div class="char-photo-wrapper">
+            <img src="assets/images/lucius.jpg" alt="Lucius Fox Wayne Enterprises" class="char-real-photo"
+              loading="lazy">
+            <div class="char-photo-overlay"></div>
+            <div class="char-badge tech-badge">WAYNE ENTERPRISES // P&D</div>
+          </div>
+          <div class="char-content-wrap">
+            <h3>Lucius Fox</h3>
+            <p class="char-subtitle">CEO & Engenheiro Bélico</p>
+            <p class="char-desc">O cérebro por trás dos blindados militares, protótipos de armadura de fibra de carbono,
+              do Batmóvel (Tumbler) e dos sistemas de satélite que sustentam o Morcego.</p>
+            <div class="char-tags">
+              <span>Blindagem Kevlar</span>
+              <span>Batmóvel</span>
+              <span>Criptografia</span>
+            </div>
+            <button class="dossier-expand-btn" data-target="modal-lucius">VER DOSSIÊ COMPLETO</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mulher-Gato (Selina Kyle) -->
+      <div class="char-card" data-category="gcpd" data-char="catwoman">
+        <div class="char-card-inner">
+          <div class="char-photo-wrapper">
+            <img src="assets/images/catwoman.jpg" alt="Selina Kyle Mulher-Gato" class="char-real-photo" loading="lazy">
+            <div class="char-photo-overlay"></div>
+            <div class="char-badge antihero-badge">ANTI-HEROÍNA / AMOR PROIBIDO</div>
+          </div>
+          <div class="char-content-wrap">
+            <h3>Selina Kyle (Mulher-Gato)</h3>
+            <p class="char-subtitle">A Ladra de Gotham & Par Amoroso</p>
+            <p class="char-desc">Caminha na linha tênue entre vilania e heroísmo. Mestra do furto, acrobacias e do
+              chicote, compartilha uma paixão tempestuosa com Bruce Wayne nos telhados de Gotham.</p>
+            <div class="char-tags">
+              <span>Infiltração Furtiva</span>
+              <span>Chicote de Combate</span>
+              <span>Garras Retráteis</span>
+            </div>
+            <button class="dossier-expand-btn" data-target="modal-selina">VER DOSSIÊ COMPLETO</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 3: GALERIA DE VILÕES DO ASILO ARKHAM COM FOTOS REAIS -->
+  <section id="viloes" class="content-section">
+    <div class="section-header">
+      <span class="sub-title arkham-warning"><i class="fa-solid fa-triangle-exclamation"></i> ASILO ARKHAM // REGISTRO
+        CRIMINOSO</span>
+      <h2>A GALERIA DE VILÕES</h2>
+      <div class="bat-divider red-divider"><span>🃏</span></div>
+      <p class="section-intro">As mentes mais insanas, psicopatas e perigosas que atormentam as noites da metrópole.</p>
+    </div>
+
+    <!-- Arkham Rogues Interactive Carousel / Grid -->
+    <div class="rogues-interactive-wrapper">
+      <div class="threat-level-indicator">
+        <span>NÍVEL DE AMEAÇA GERAL: <strong>CÓDIGO VERMELHO (MÁXIMO)</strong></span>
+        <span>CONTENÇÃO ARKHAM: <strong>FALHA CRÍTICA</strong></span>
+      </div>
+
+      <div class="villains-grid">
+        <!-- Coringa -->
+        <div class="villain-card joker-card" data-villain="joker">
+          <div class="villain-photo-wrapper">
+            <img src="assets/images/joker.jpg" alt="Coringa Joker de Verdade" class="villain-real-photo" loading="lazy">
+            <div class="villain-photo-overlay"></div>
+            <div class="threat-badge lethal">AMEAÇA ÔMEGA</div>
+          </div>
+          <div class="villain-card-content">
+            <span class="villain-aka">ARKHAM #0801</span>
+            <h3>CORINGA (THE JOKER)</h3>
+            <p class="villain-title">O Príncipe Palhaço do Crime</p>
+            <p class="villain-summary">O nêmesis absoluto do Batman. Não busca dinheiro ou controle; busca provar que
+              basta um 'dia ruim' para transformar a mais sã das pessoas em um monstro.</p>
+
+            <div class="threat-stats">
+              <div class="threat-bar-row">
+                <span>Insanidade:</span>
+                <div class="threat-bar">
+                  <div class="fill-bar full"></div>
+                </div>
+              </div>
+              <div class="threat-bar-row">
+                <span>Imprevisibilidade:</span>
+                <div class="threat-bar">
+                  <div class="fill-bar full"></div>
+                </div>
+              </div>
+            </div>
+
+            <button class="villain-audio-btn" data-quote="joker">
+              <i class="fa-solid fa-volume-high"></i> OUVIR RISO INSANO
+            </button>
+          </div>
+        </div>
+
+        <!-- Charada -->
+        <div class="villain-card riddler-card" data-villain="riddler">
+          <div class="villain-photo-wrapper">
+            <img src="assets/images/riddler.jpg" alt="O Charada Riddler" class="villain-real-photo" loading="lazy">
+            <div class="villain-photo-overlay"></div>
+            <div class="threat-badge intellect">GENIALIDADE OBSESSIVA</div>
+          </div>
+          <div class="villain-card-content">
+            <span class="villain-aka">EDWARD NYGMA</span>
+            <h3>O CHARADA (RIDDLER)</h3>
+            <p class="villain-title">Mestre dos Enigmas e Jogos Mortais</p>
+            <p class="villain-summary">Obsessão compulsiva em provar superioridade intelectual sobre o Batman através de
+              enigmas criptografados, labirintos tecnológicos e armadilhas letais.</p>
+
+            <div class="threat-stats">
+              <div class="threat-bar-row">
+                <span>Intelecto:</span>
+                <div class="threat-bar">
+                  <div class="fill-bar high"></div>
+                </div>
+              </div>
+              <div class="threat-bar-row">
+                <span>Narcisismo:</span>
+                <div class="threat-bar">
+                  <div class="fill-bar full"></div>
+                </div>
+              </div>
+            </div>
+
+            <button class="villain-audio-btn" data-quote="riddler">
+              <i class="fa-solid fa-circle-question"></i> RESOLVER O ENIGMA
+            </button>
+          </div>
+        </div>
+
+        <!-- Pinguim -->
+        <div class="villain-card penguin-card" data-villain="penguin">
+          <div class="villain-photo-wrapper">
+            <img src="assets/images/penguin.jpg" alt="O Pinguim Oswald Cobblepot" class="villain-real-photo"
+              loading="lazy">
+            <div class="villain-photo-overlay"></div>
+            <div class="threat-badge mob">SUBMUNDO DO CRIME</div>
+          </div>
+          <div class="villain-card-content">
+            <span class="villain-aka">OSWALD COBBLEPOT</span>
+            <h3>PINGUIM (PENGUIN)</h3>
+            <p class="villain-title">Chefão do Iceberg Lounge</p>
+            <p class="villain-summary">Aristocrata renegado que comanda as maiores redes de contrabando, lavagem de
+              dinheiro e mercado negro de Gotham com seus letais guarda-chuvas modificados.</p>
+
+            <div class="threat-stats">
+              <div class="threat-bar-row">
+                <span>Influência Mafiosa:</span>
+                <div class="threat-bar">
+                  <div class="fill-bar high"></div>
+                </div>
+              </div>
+              <div class="threat-bar-row">
+                <span>Recursos Financeiros:</span>
+                <div class="threat-bar">
+                  <div class="fill-bar high"></div>
+                </div>
+              </div>
+            </div>
+
+            <button class="villain-audio-btn" data-quote="penguin">
+              <i class="fa-solid fa-gun"></i> SOM DE DISPARO
+            </button>
+          </div>
+        </div>
+
+        <!-- Bane -->
+        <div class="villain-card bane-card" data-villain="bane">
+          <div class="villain-photo-wrapper">
+            <img src="assets/images/bane.jpg" alt="Bane O Homem que Quebrou o Morcego" class="villain-real-photo"
+              loading="lazy">
+            <div class="villain-photo-overlay"></div>
+            <div class="threat-badge physical">FORÇA BRUTA & TÁTICO</div>
+          </div>
+          <div class="villain-card-content">
+            <span class="villain-aka">O HOMEM QUE QUEBROU O MORCEGO</span>
+            <h3>BANE</h3>
+            <p class="villain-title">Guerreiro do Veneno</p>
+            <p class="villain-summary">Criado na infernal prisão de Peña Duro. Combina intelecto estratégico genial com
+              a superforça concedida pelo esteroide neural tóxico 'Veneno'.</p>
+
+            <div class="threat-stats">
+              <div class="threat-bar-row">
+                <span>Força Física:</span>
+                <div class="threat-bar">
+                  <div class="fill-bar full"></div>
+                </div>
+              </div>
+              <div class="threat-bar-row">
+                <span>Estratégia Militar:</span>
+                <div class="threat-bar">
+                  <div class="fill-bar high"></div>
+                </div>
+              </div>
+            </div>
+
+            <button class="villain-audio-btn" data-quote="bane">
+              <i class="fa-solid fa-hand-fist"></i> RUGIDO DO VENENO
+            </button>
+          </div>
+        </div>
+
+        <!-- Duas-Caras -->
+        <div class="villain-card twoface-card" data-villain="twoface">
+          <div class="villain-photo-wrapper">
+            <img src="assets/images/twoface.jpg" alt="Duas-Caras Harvey Dent" class="villain-real-photo" loading="lazy">
+            <div class="villain-photo-overlay"></div>
+            <div class="threat-badge dual">PERSONALIDADE DUPLA</div>
+          </div>
+          <div class="villain-card-content">
+            <span class="villain-aka">HARVEY DENT</span>
+            <h3>DUAS-CARAS (TWO-FACE)</h3>
+            <p class="villain-title">O Promotor Caído</p>
+            <p class="villain-summary">Outrora o 'Cavaleiro Branco' de Gotham, promotor incorruptível até ter metade do
+              rosto queimado por ácido. Agora decide a vida e a morte no lançamento de sua moeda dupla.</p>
+
+            <div class="threat-stats">
+              <div class="threat-bar-row">
+                <span>Dupla Personalidade:</span>
+                <div class="threat-bar">
+                  <div class="fill-bar full"></div>
+                </div>
+              </div>
+              <div class="threat-bar-row">
+                <span>Imprevisibilidade:</span>
+                <div class="threat-bar">
+                  <div class="fill-bar high"></div>
+                </div>
+              </div>
+            </div>
+
+            <button class="villain-audio-btn" data-quote="coin">
+              <i class="fa-solid fa-circle-notch"></i> GIRAR A MOEDA
+            </button>
+          </div>
+        </div>
+
+        <!-- Espantalho -->
+        <div class="villain-card scarecrow-card" data-villain="scarecrow">
+          <div class="villain-photo-wrapper">
+            <img src="assets/images/scarecrow.jpg" alt="Espantalho Dr Jonathan Crane" class="villain-real-photo"
+              loading="lazy">
+            <div class="villain-photo-overlay"></div>
+            <div class="threat-badge terror">MESTRE DO MEDO</div>
+          </div>
+          <div class="villain-card-content">
+            <span class="villain-aka">DR. JONATHAN CRANE</span>
+            <h3>ESPANTALHO (SCARECROW)</h3>
+            <p class="villain-title">Senhor das Fobias</p>
+            <p class="villain-summary">Psicólogo maníaco que desenvolveu a Toxina do Medo: gás alucinógeno capaz de
+              projetar nos olhos de suas vítimas seus maiores e mais aterrorizantes pesadelos.</p>
+
+            <div class="threat-stats">
+              <div class="threat-bar-row">
+                <span>Guerra Psicológica:</span>
+                <div class="threat-bar">
+                  <div class="fill-bar full"></div>
+                </div>
+              </div>
+              <div class="threat-bar-row">
+                <span>Armas Químicas:</span>
+                <div class="threat-bar">
+                  <div class="fill-bar high"></div>
+                </div>
+              </div>
+            </div>
+
+            <button class="villain-audio-btn" data-quote="scarecrow">
+              <i class="fa-solid fa-wind"></i> DISPERSAR GÁS DO MEDO
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 4: SALA DE CINEMA & TRAILERS EMBUTIDOS -->
+  <section id="trailers" class="content-section bg-darker cinema-section">
+    <div class="section-header">
+      <span class="sub-title"><i class="fa-solid fa-clapperboard"></i> CINEMATOGRAFIA DE GOTHAM</span>
+      <h2>SALA DE TRAILERS & CINEMA</h2>
+      <div class="bat-divider gold-divider"><span>🎬</span></div>
+      <p class="section-intro">Reviva as mais épicas adaptações do Batman para a tela grande em alta definição.</p>
+    </div>
+
+    <!-- Player Principal de Destaque -->
+    <div class="cinema-player-wrapper">
+      <div class="screen-frame">
+        <div class="screen-top-bar">
+          <div class="rec-indicator"><span class="rec-dot"></span> TRANSMISSÃO CINEMATOGRÁFICA</div>
+          <div id="current-movie-label" class="movie-label">The Batman (2022) - Trailer Oficial Principal</div>
+          <div class="screen-actions">
+            <span class="badge-hd">4K ULTRA HD</span>
+          </div>
+        </div>
+
+        <div class="video-container">
+          <iframe id="main-trailer-iframe"
+            src="https://www.youtube-nocookie.com/embed/mqqft2x_Aa4?enablejsapi=1&rel=0&modestbranding=1"
+            title="The Batman - Trailer Oficial" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen>
+          </iframe>
+        </div>
+
+        <div class="screen-bottom-bar">
+          <div class="playing-info">
+            <h3 id="current-trailer-title">The Batman (2022)</h3>
+            <p id="current-trailer-desc">Dirigido por Matt Reeves e estrelado por Robert Pattinson como um Batman jovem
+              no seu segundo ano combatendo o crime, investigando as cartas macabras deixadas pelo Charada.</p>
+          </div>
+          <div class="trailer-specs-box">
+            <span id="trailer-director"><strong>Direção:</strong> Matt Reeves</span>
+            <span id="trailer-actor"><strong>Batman:</strong> Robert Pattinson</span>
+            <span id="trailer-year"><strong>Ano:</strong> 2022</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Playlist Seletora de Trailers Interativa -->
+      <div class="trailers-playlist">
+        <h4 class="playlist-heading"><i class="fa-solid fa-list-ul"></i> SELECIONE UM FILME</h4>
+
+        <div class="playlist-items-scroll">
+          <!-- Item 1: The Batman (2022) -->
+          <div class="playlist-item active-trailer" data-video-id="mqqft2x_Aa4" data-title="The Batman (2022)"
+            data-desc="Um thriller noir visceral focado nas raízes detetivescas de Bruce Wayne contra uma conspiração que envolve a alta cúpula de Gotham e a família Wayne."
+            data-director="Matt Reeves" data-actor="Robert Pattinson" data-year="2022">
+            <div class="thumb-container">
+              <img src="https://img.youtube.com/vi/mqqft2x_Aa4/hqdefault.jpg" alt="The Batman 2022 Thumbnail"
+                loading="lazy">
+              <span class="play-overlay"><i class="fa-solid fa-play"></i></span>
+            </div>
+            <div class="item-text">
+              <h5>The Batman</h5>
+              <span>2022 • Matt Reeves</span>
+              <div class="mini-tag">Noir / Detetive</div>
+            </div>
+          </div>
+
+          <!-- Item 2: The Dark Knight (2008) -->
+          <div class="playlist-item" data-video-id="EXeTwQWrcwY" data-title="Batman: O Cavaleiro das Trevas (2008)"
+            data-desc="Considerado por muitos a obra-prima absoluta dos filmes de quadrinhos. Heath Ledger entrega uma interpretação imortal do Coringa, desafiando a moral de Christian Bale."
+            data-director="Christopher Nolan" data-actor="Christian Bale" data-year="2008">
+            <div class="thumb-container">
+              <img src="https://img.youtube.com/vi/EXeTwQWrcwY/hqdefault.jpg" alt="The Dark Knight Thumbnail"
+                loading="lazy">
+              <span class="play-overlay"><i class="fa-solid fa-play"></i></span>
+            </div>
+            <div class="item-text">
+              <h5>O Cavaleiro das Trevas</h5>
+              <span>2008 • Christopher Nolan</span>
+              <div class="mini-tag">Oscar Vencedor</div>
+            </div>
+          </div>
+
+          <!-- Item 3: Batman Begins (2005) -->
+          <div class="playlist-item" data-video-id="neY2xVmOfUM" data-title="Batman Begins (2005)"
+            data-desc="O recomeço realista da lenda. Bruce treina nas montanhas do Himalaia com a Liga das Sombras de Ra's al Ghul antes de regressar a Gotham e confrontar o Espantalho."
+            data-director="Christopher Nolan" data-actor="Christian Bale" data-year="2005">
+            <div class="thumb-container">
+              <img src="https://img.youtube.com/vi/neY2xVmOfUM/hqdefault.jpg" alt="Batman Begins Thumbnail"
+                loading="lazy">
+              <span class="play-overlay"><i class="fa-solid fa-play"></i></span>
+            </div>
+            <div class="item-text">
+              <h5>Batman Begins</h5>
+              <span>2005 • Christopher Nolan</span>
+              <div class="mini-tag">A Origem Moderna</div>
+            </div>
+          </div>
+
+          <!-- Item 4: O Cavaleiro das Trevas Ressurge (2012) -->
+          <div class="playlist-item" data-video-id="g8evyE9TuYk" data-title="O Cavaleiro das Trevas Ressurge (2012)"
+            data-desc="O épico desfecho da trilogia de Nolan. Oito anos após a morte de Harvey Dent, o terrorista Bane coloca Gotham em estado de sítio militar, forçando o retorno de Bruce."
+            data-director="Christopher Nolan" data-actor="Christian Bale" data-year="2012">
+            <div class="thumb-container">
+              <img src="https://img.youtube.com/vi/g8evyE9TuYk/hqdefault.jpg" alt="The Dark Knight Rises Thumbnail"
+                loading="lazy">
+              <span class="play-overlay"><i class="fa-solid fa-play"></i></span>
+            </div>
+            <div class="item-text">
+              <h5>O Cavaleiro das Trevas Ressurge</h5>
+              <span>2012 • Christopher Nolan</span>
+              <div class="mini-tag">Conclusão Épica</div>
+            </div>
+          </div>
+
+          <!-- Item 5: Batman v Superman: A Origem da Justiça (2016) -->
+          <div class="playlist-item" data-video-id="0WWzgGyAH6Y" data-title="Batman v Superman (2016)"
+            data-desc="Ben Affleck interpreta um Cavaleiro das Trevas veterano, cínico e brutal que vê o poder divino do Superman como uma ameaça existencial para a humanidade."
+            data-director="Zack Snyder" data-actor="Ben Affleck" data-year="2016">
+            <div class="thumb-container">
+              <img src="https://img.youtube.com/vi/0WWzgGyAH6Y/hqdefault.jpg" alt="Batman v Superman Thumbnail"
+                loading="lazy">
+              <span class="play-overlay"><i class="fa-solid fa-play"></i></span>
+            </div>
+            <div class="item-text">
+              <h5>Batman v Superman</h5>
+              <span>2016 • Zack Snyder</span>
+              <div class="mini-tag">Duelo de Titãs</div>
+            </div>
+          </div>
+
+          <!-- Item 6: Batman (1989) de Tim Burton -->
+          <div class="playlist-item" data-video-id="dgC9Q0uhX70" data-title="Batman (1989)"
+            data-desc="O clássico gótico revolucionário de Tim Burton com Michael Keaton e Jack Nicholson. Redefiniu os filmes de super-heróis e o tom sombrio nos cinemas do mundo todo."
+            data-director="Tim Burton" data-actor="Michael Keaton" data-year="1989">
+            <div class="thumb-container">
+              <img src="https://img.youtube.com/vi/dgC9Q0uhX70/hqdefault.jpg" alt="Batman 1989 Thumbnail"
+                loading="lazy">
+              <span class="play-overlay"><i class="fa-solid fa-play"></i></span>
+            </div>
+            <div class="item-text">
+              <h5>Batman Clássico (1989)</h5>
+              <span>1989 • Tim Burton</span>
+              <div class="mini-tag">Clássico Gótico</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 5: ARSENAL WAYNETECH & BAT-EQUIPAMENTOS -->
+  <section class="bat-equipamentos content-section bg-darker" id="arsenal">
+    <div class="section-header">
+      <span class="sub-title"><i class="fa-solid fa-microchip"></i> WAYNE ENTERPRISES // P&amp;D</span>
+      <h2>BAT-EQUIPAMENTOS</h2>
+      <div class="bat-divider"><span>🦇</span></div>
+      <p class="section-intro">Registros fotográficos de peças, veículos e protótipos que mantêm Gotham sob vigilância.</p>
+    </div>
+
+    <div class="container-equipamentos">
+      <article class="card-equipamento equipment-featured">
+        <figure class="equipment-photo-frame">
+          <img src="assets/images/equipment/batmobile-tumbler.jpg" alt="Fotografia do Tumbler, o Batmóvel, em exposição" class="foto-equipamento" loading="lazy">
+          <figcaption><i class="fa-solid fa-camera"></i> REGISTRO DE CAMPO // TUMBLER</figcaption>
+          <span class="equipment-scan" aria-hidden="true"></span>
+        </figure>
+        <div class="equipment-content">
+          <span class="equipment-index">01 // VEÍCULO TÁTICO</span>
+          <h3>Batmóvel Tumbler</h3>
+          <p>Plataforma de perseguição blindada, projetada para atravessar o caos de Gotham sem perder velocidade.</p>
+          <div class="equipment-status"><span></span> SISTEMA OPERACIONAL</div>
+        </div>
+      </article>
+
+      <article class="card-equipamento equipment-priority">
+        <figure class="equipment-photo-frame">
+          <img src="assets/images/equipment/batsuit-chamber.jpg" alt="Fotografia frontal do Bat-traje em uma câmara de exposição" class="foto-equipamento equipment-front-photo" loading="lazy">
+          <figcaption><i class="fa-solid fa-camera"></i> CÂMARA DE EQUIPAMENTOS // ARMADURA</figcaption>
+          <span class="equipment-scan" aria-hidden="true"></span>
+        </figure>
+        <div class="equipment-content">
+          <span class="equipment-index">02 // PROTEÇÃO</span>
+          <h3>Bat-traje</h3>
+          <p>Camadas de proteção tática e mobilidade para enfrentar as ameaças mais perigosas da cidade.</p>
+          <div class="equipment-status"><span></span> BLINDAGEM ATIVA</div>
+        </div>
+      </article>
+
+      <article class="card-equipamento">
+        <figure class="equipment-photo-frame">
+          <img src="assets/images/equipment/batpod.jpg" alt="Fotografia frontal da Batpod em exibição" class="foto-equipamento" loading="lazy">
+          <figcaption><i class="fa-solid fa-camera"></i> UNIDADE DE MOBILIDADE // BATPOD</figcaption>
+          <span class="equipment-scan" aria-hidden="true"></span>
+        </figure>
+        <div class="equipment-content">
+          <span class="equipment-index">03 // MOBILIDADE</span>
+          <h3>Batpod</h3>
+          <p>Motocicleta de resposta rápida, construída para curvas impossíveis e deslocamentos urbanos extremos.</p>
+          <div class="equipment-status"><span></span> MODO PERSEGUIÇÃO</div>
+        </div>
+      </article>
+
+      <article class="card-equipamento equipment-priority equipment-belt-card">
+        <figure class="equipment-photo-frame">
+          <img src="assets/images/equipment/utility-belt.jpg" alt="Fotografia frontal em close do cinto de utilidades do Batman" class="foto-equipamento equipment-belt-photo" loading="lazy">
+          <figcaption><i class="fa-solid fa-camera"></i> VISTA FRONTAL // KIT TÁTICO</figcaption>
+          <span class="equipment-scan" aria-hidden="true"></span>
+        </figure>
+        <div class="equipment-content">
+          <span class="equipment-index">04 // FERRAMENTAS</span>
+          <h3>Cinto de Utilidades</h3>
+          <p>Compartimentos modulares que mantêm recursos essenciais sempre ao alcance durante a patrulha.</p>
+          <div class="equipment-status"><span></span> ACESSO RÁPIDO</div>
+        </div>
+      </article>
+    </div>
+    <p class="equipment-credits">Fotos reais sob licenças Creative Commons, via Wikimedia Commons: <a href="https://commons.wikimedia.org/wiki/File:The_Tumbler_Batmobile_Warner_Bros._Studios_Burbank_2019.jpg" target="_blank" rel="noopener noreferrer">Steven Lek</a>, <a href="https://commons.wikimedia.org/wiki/File:Batsuit_from_The_Dark_Knight_Rises_film_-_closer_view.jpg" target="_blank" rel="noopener noreferrer">Ramsey Isler</a> (traje), <a href="https://commons.wikimedia.org/wiki/File:Baltimore_Comic-Con_2011_-_Batman_(6844241911).jpg" target="_blank" rel="noopener noreferrer">Ryan Quick</a> (cinto) e <a href="https://commons.wikimedia.org/wiki/File:Batpod_from_the_front.jpg" target="_blank" rel="noopener noreferrer">Mike Renlund</a>.</p>
+  </section>
+
+  <!-- INTERACTIVE MINI-GAME: ENIGMA DO CHARADA -->
+  <section class="riddle-section content-section">
+    <div class="riddle-box">
+      <div class="riddle-header">
+        <i class="fa-solid fa-question riddle-spin"></i>
+        <h3>ENIGMA DO CHARADA: PROVE SEU VALOR A GOTHAM</h3>
+      </div>
+      <p id="riddle-text">"Pense rápido, morcego: Posso quebrar sem nunca ser tocado. Posso ser feito sem nunca ser
+        construído. Posso ser guardado, mas nunca por muito tempo. O que eu sou?"</p>
+
+      <div class="riddle-form">
+        <input type="text" id="riddle-input" placeholder="Digite sua resposta..." autocomplete="off">
+        <button id="riddle-submit-btn" class="bat-btn bat-btn-primary">DESVENDAR</button>
+      </div>
+      <div id="riddle-feedback" class="riddle-feedback"></div>
+      <p class="riddle-hint-text">Dica: Tem a ver com a palavra que Thomas Wayne fez Bruce prometer no leito de morte...
+      </p>
+    </div>
+  </section>
+
+  <!-- MODAL DE DOSSIÊ DETALHADO (INTERATIVO) -->
+  <div id="dossier-modal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-content">
+      <button class="modal-close-btn" id="modal-close" aria-label="Fechar Modal">&times;</button>
+      <div class="modal-header">
+        <span class="modal-stamp">DOCUMENTO ULTRA-SECRETO // WAYNE ENTERPRISES</span>
+        <h2 id="modal-title">Dossiê de Personagem</h2>
+      </div>
+      <div class="modal-body" id="modal-body">
+        <!-- Conteúdo preenchido dinamicamente via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- RODAPÉ ESTILO GOTHAM CITY -->
+  <footer class="bat-footer">
+    <div class="footer-container">
+      <div class="footer-branding">
+        <div class="footer-logo">
+          <svg viewBox="0 0 1000 480" class="footer-bat-svg">
+            <path
+              d="M500,470 C470,390 410,330 330,310 C350,260 310,210 240,210 C160,210 90,270 30,360 C10,260 40,160 130,90 C220,130 310,130 380,80 C410,140 450,180 470,180 L470,70 L488,40 L496,100 L504,100 L512,40 L530,70 L530,180 C550,180 590,140 620,80 C690,130 780,130 870,90 C960,160 990,260 970,360 C910,270 840,210 760,210 C690,210 650,260 670,310 C590,330 530,390 500,470 Z" />
+          </svg>
+          <span class="footer-title">THE BATMAN PORTAL</span>
+        </div>
+        <p class="footer-text">Homenagem interativa aos mais de 80 anos do Cavaleiro das Trevas. Batman e todos os
+          personagens relacionados são marcas registradas da DC Comics / Warner Bros. Discovery.</p>
+      </div>
+
+      <div class="footer-links-group">
+        <h4>Navegação</h4>
+        <ul>
+          <li><a href="#hero">Início</a></li>
+          <li><a href="#origem">História & Origem</a></li>
+          <li><a href="#aliados">Bat-Família</a></li>
+          <li><a href="#viloes">Vilões do Arkham</a></li>
+          <li><a href="#trailers">Trailers de Cinema</a></li>
+          <li><a href="#arsenal">Equipamentos Wayne</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-emergency">
+        <h4>Linha Direta de Emergência</h4>
+        <p>Canal de rádio policial encriptado: GCPD Canal 12</p>
+        <button id="footer-batsignal-btn" class="bat-btn bat-btn-sm">
+          <i class="fa-solid fa-bolt"></i> PROJETAR BAT-SINAL
+        </button>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Wayne Enterprises // Feito por João Georg para fãs do Cavaleiro das Trevas.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
